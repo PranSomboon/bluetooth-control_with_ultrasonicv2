@@ -222,8 +222,8 @@ let j = 0
 let g_mode = 0
 let g_RGBMode = 0
 let connected = 0
-let item = ""
 let i = 0
+let item = ""
 Tinybit.RGB_Car_Big(Tinybit.enColor.Red)
 bluetooth.startUartService()
 basic.showLeds(`
@@ -236,6 +236,26 @@ basic.showLeds(`
 connected = 0
 g_RGBMode = 0
 g_mode = 0
+basic.forever(function () {
+    if (Tinybit.Ultrasonic_Car() < 20) {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Stop)
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Back)
+    } else if (Tinybit.Ultrasonic_Car() < 25) {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_SpinRight)
+    } else if (Tinybit.Ultrasonic_Car() < 30) {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Run)
+        Tinybit.CarCtrlSpeed(Tinybit.CarState.Car_Run, 103)
+    } else if (Tinybit.Ultrasonic_Car() < 50) {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Run)
+        Tinybit.CarCtrlSpeed(Tinybit.CarState.Car_Run, 86)
+    } else if (Tinybit.Ultrasonic_Car() < 60) {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Run)
+        Tinybit.CarCtrlSpeed(Tinybit.CarState.Car_Run, 125)
+    } else {
+        Tinybit.CarCtrl(Tinybit.CarState.Car_Run)
+        Tinybit.CarCtrlSpeed(Tinybit.CarState.Car_Run, 255)
+    }
+})
 basic.forever(function () {
     if (g_mode == 1) {
         TrackingMode()
